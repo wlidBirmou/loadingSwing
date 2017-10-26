@@ -1,4 +1,4 @@
-package org.al;
+package org.al.percentage;
 
 import java.awt.Dimension;
 
@@ -11,12 +11,12 @@ import java.awt.Dimension;
  *
  * @author abderrahim
  */
-public abstract class LoadingSpinner extends LoadingComponent {
+public abstract class LoadingSpinnerPercentage extends LoadingPercentage {
 
     protected int gapX = 6;
     protected int gapY = 6;
 
-    public LoadingSpinner() {
+    public LoadingSpinnerPercentage() {
         super();
 
     }

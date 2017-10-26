@@ -3,13 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.al;
+package org.al.percentage;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
@@ -19,7 +18,7 @@ import java.awt.geom.Rectangle2D;
  *
  * @author abderrahim
  */
-public class LoadingSpinLiquid extends LoadingSpinner{
+public class LoadingSpinLiquid extends LoadingSpinnerPercentage{
     
     protected Color backgroundSpinColor;
     protected Color borderSpinColor;
