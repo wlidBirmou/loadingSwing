@@ -6,16 +6,13 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.AbstractAction;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingWorker;
-import org.al.LoadingComponent;
+import javax.swing.Timer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -26,7 +23,7 @@ import org.al.LoadingComponent;
  *
  * @author abderrahim
  */
-public abstract class LoadingPercentage extends LoadingComponent {
+public abstract class LoadingPercentage extends JPanel {
 
     public static final int MAX_POSITION = 100;
     public static final int MIN_POSITION = 0;
@@ -34,16 +31,21 @@ public abstract class LoadingPercentage extends LoadingComponent {
     protected JLabel percentageLabel;
     protected int position = MIN_POSITION;
     protected Dimension sketchDim;
-    protected Color textForgroundColor;
-    private SwingWorker worker;
+    protected Color textColor;
+    protected Color backgroundSketchColor;
+    protected Color borderSketchColor;
+    protected Color fillingColor;
+
+    Timer timer;
+    int goToPosition = 0;
+    boolean isProcessing = false;
 
     public LoadingPercentage() {
         super();
         super.setLayout(null);
-        this.textForgroundColor = Color.white;
-
+        this.textColor = Color.white;
+        this.borderSketchColor = new Color(0, 0, 0, 0);
         build();
-
     }
 
     private void build() {
@@ -55,7 +57,7 @@ public abstract class LoadingPercentage extends LoadingComponent {
         this.percentageLabel = new JLabel(position + "%");
         this.percentageLabel.setVerticalAlignment(JLabel.CENTER);
         this.percentageLabel.setSize(this.getSize().width, this.getSize().height);
-        this.percentageLabel.setForeground(textForgroundColor);
+        this.percentageLabel.setForeground(textColor);
         this.percentageLabel.setHorizontalAlignment(JLabel.CENTER);
         this.add(this.percentageLabel);
     }
@@ -91,39 +93,32 @@ public abstract class LoadingPercentage extends LoadingComponent {
     }
 
     public void setPosition(int pos) {
-        if (this.position < pos && pos <= 100) {
-            if(worker!=null && worker.isDone()){
-                worker.cancel(true);
-            }
-            worker = new SwingWorker() {
-                @Override
-                protected Object doInBackground() throws Exception {
-
-                    int initialPosition = position;
-                    for (int i = initialPosition; position < pos; i++) {
-                        try {
-                            TimeUnit.MILLISECONDS.sleep(20);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(LoadingPie.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        position = i;
-                        publish();
-
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void process(List chunks) {
-                    super.process(chunks);
-                    percentageLabel.setText(position + "%");
-                    repaint();
-                }
-
-            };
+        if (pos > goToPosition) {
+            goToPosition = pos;
         }
+        if (pos > MAX_POSITION) {
+            goToPosition = MAX_POSITION;
+        } else {
+            goToPosition = pos;
+        }
+        if (this.position < goToPosition && isProcessing == false) {
+            isProcessing = true;
+            timer = new Timer(20, new AbstractAction() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    percentageLabel.setText(position + "%");
+                    revalidate();
+                    repaint();
+                    if (position >= goToPosition) {
+                        timer.stop();
+                        isProcessing = false;
+                    }
+                    position++;
 
-        worker.run();
+                }
+            });
+            timer.start();
+        }
     }
 
     @Override
@@ -135,12 +130,40 @@ public abstract class LoadingPercentage extends LoadingComponent {
         fillSketch((Graphics2D) g, sketchDim, position);
     }
 
-    public Color getTextForgroundColor() {
-        return textForgroundColor;
+    public Color getTextColor() {
+        return textColor;
     }
 
-    public void setTextForgroundColor(Color textForgroundColor) {
-        this.percentageLabel.setForeground(textForgroundColor);
+    public void setTextColor(Color textColor) {
+        this.textColor = textColor;
+        this.percentageLabel.setForeground(this.textColor);
+    }
+
+    public Color getBackgroundSketchColor() {
+        return backgroundSketchColor;
+    }
+
+    public void setBackgroundSketchColor(Color backgroundSketchColor) {
+        this.backgroundSketchColor = backgroundSketchColor;
+        this.repaint();
+    }
+
+    public Color getFillingColor() {
+        return fillingColor;
+    }
+
+    public void setFillingColor(Color fillingColor) {
+        this.fillingColor = fillingColor;
+        this.repaint();
+    }
+
+    public Color getBorderSketchColor() {
+        return borderSketchColor;
+    }
+
+    public void setBorderSketchColor(Color color) {
+        this.borderSketchColor = color;
+        this.repaint();
     }
 
     public abstract Dimension getSketchDimRelativeToPanel();

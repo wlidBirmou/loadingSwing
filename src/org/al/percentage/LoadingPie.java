@@ -15,49 +15,20 @@ import java.awt.Stroke;
  *
  * @author abderrahim
  */
-public class LoadingPie extends LoadingSpinnerPercentage {
-
-    protected Color backgroundSpinColor;
-    protected Color borderSpinColor;
-    protected Color fillingColor;
+public class LoadingPie extends LoadingSpinPercentage {
 
     public LoadingPie() {
-        this.fillingColor = new Color(22, 24, 79);
-        this.backgroundSpinColor = new Color(107, 109, 109);
-        this.borderSpinColor = new Color(68, 68, 68);
-    }
-
-    public Color getFillingColor() {
-        return fillingColor;
-    }
-
-    public void setFillingColor(Color fillingColor) {
-        this.fillingColor = fillingColor;
-    }
-
-    public Color getBackgroundSpinColor() {
-        return backgroundSpinColor;
-    }
-
-    public void setBackgroundSpinColor(Color backgroundSpinColor) {
-        this.backgroundSpinColor = backgroundSpinColor;
-    }
-
-    public Color getBorderSpinColor() {
-        return borderSpinColor;
-    }
-
-    public void setBorderSpinColor(Color BorderSpinColor) {
-        this.borderSpinColor = BorderSpinColor;
+        this.fillingColor = new Color(183, 36, 36);
+        this.backgroundSketchColor = new Color(244, 166, 166);
     }
 
     @Override
     public void drawSketch(Graphics2D graphics, Dimension sketchDimension) {
         Stroke stroke = graphics.getStroke();
-        graphics.setPaint(backgroundSpinColor);
+        graphics.setPaint(backgroundSketchColor);
         graphics.fillOval(this.gapX / 2, this.gapY / 2, sketchDimension.width, sketchDimension.height);
-        graphics.setPaint(borderSpinColor);
-            graphics.setStroke(new BasicStroke(1));
+        graphics.setPaint(borderSketchColor);
+        graphics.setStroke(new BasicStroke(1));
         graphics.drawOval(this.gapX / 2, this.gapY / 2, sketchDimension.width, sketchDimension.height);
         graphics.setStroke(stroke);
     }

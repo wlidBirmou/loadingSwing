@@ -9,14 +9,14 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
+import javax.swing.JPanel;
 import javax.swing.Timer;
-import org.al.LoadingComponent;
 
 /**
  *
  * @author abderrahim
  */
-public abstract class LoadingAnimated extends LoadingComponent {
+public abstract class LoadingAnimated extends JPanel {
 
     public static final int VERY_SLOW = 150;
     public static final int SLOW = 100;

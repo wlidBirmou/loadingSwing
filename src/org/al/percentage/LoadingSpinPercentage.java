@@ -11,12 +11,12 @@ import java.awt.Dimension;
  *
  * @author abderrahim
  */
-public abstract class LoadingSpinnerPercentage extends LoadingPercentage {
+public abstract class LoadingSpinPercentage extends LoadingPercentage {
 
     protected int gapX = 6;
     protected int gapY = 6;
 
-    public LoadingSpinnerPercentage() {
+    public LoadingSpinPercentage() {
         super();
 
     }
