@@ -21,7 +21,7 @@ import javax.swing.Timer;
  */
 /**
  *
- * @author abderrahim
+ * @author Abderrahim
  */
 public abstract class LoadingPercentage extends JPanel {
 
@@ -92,32 +92,44 @@ public abstract class LoadingPercentage extends JPanel {
         this.sketchDim = this.getSketchDimRelativeToPanel();
     }
 
+    /**
+     * To set a new position of the loading component, the new position have to
+     * be greater than the old one, if not it will have no effect
+     *
+     * @param pos : the position in percentage of the loading component, this
+     * position have to be between 0 and 100, if (pos>100) the position will be
+     * setted to 100, if (pos<0) or if pos is less than the actual position, it
+     * will have no effect
+     *
+     */
     public void setPosition(int pos) {
-        if (pos > goToPosition) {
-            goToPosition = pos;
-        }
-        if (pos > MAX_POSITION) {
-            goToPosition = MAX_POSITION;
-        } else {
-            goToPosition = pos;
-        }
-        if (this.position < goToPosition && isProcessing == false) {
-            isProcessing = true;
-            timer = new Timer(20, new AbstractAction() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    percentageLabel.setText(position + "%");
-                    revalidate();
-                    repaint();
-                    if (position >= goToPosition) {
-                        timer.stop();
-                        isProcessing = false;
-                    }
-                    position++;
+        if (pos >= MIN_POSITION) {
+            if (pos > goToPosition) {
+                goToPosition = pos;
+            }
+            if (pos > MAX_POSITION) {
+                goToPosition = MAX_POSITION;
+            } else {
+                goToPosition = pos;
+            }
+            if (this.position < goToPosition && isProcessing == false) {
+                isProcessing = true;
+                timer = new Timer(20, new AbstractAction() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        percentageLabel.setText(position + "%");
+                        revalidate();
+                        repaint();
+                        if (position >= goToPosition) {
+                            timer.stop();
+                            isProcessing = false;
+                        }
+                        position++;
 
-                }
-            });
-            timer.start();
+                    }
+                });
+                timer.start();
+            }
         }
     }
 
@@ -134,6 +146,12 @@ public abstract class LoadingPercentage extends JPanel {
         return textColor;
     }
 
+    /**
+     * set a new color for the text of the LoadingPercentage component
+     *
+     * @param textColor : define the color of the text in the LoadingPercentage
+     * component
+     */
     public void setTextColor(Color textColor) {
         this.textColor = textColor;
         this.percentageLabel.setForeground(this.textColor);
@@ -143,6 +161,13 @@ public abstract class LoadingPercentage extends JPanel {
         return backgroundSketchColor;
     }
 
+    /**
+     * set a new color for the background of the LoadingPercentage component
+     * sketch.
+     *
+     * @param textColor : define the color of the background in the
+     * LoadingPercentage component sketch
+     */
     public void setBackgroundSketchColor(Color backgroundSketchColor) {
         this.backgroundSketchColor = backgroundSketchColor;
         this.repaint();
