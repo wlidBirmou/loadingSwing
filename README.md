@@ -6,7 +6,7 @@ in the root of the repository.<br />
 ### Quick guide
 
 We instanciate one of subclasses of LoadingPercentage class: <br />
-LoadingPie loading=new LoadingPie();
+```LoadingPie loading=new LoadingPie();```
 
 We can change the looking of the loading component through various methods
 ```
