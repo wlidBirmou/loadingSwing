@@ -18,4 +18,3 @@ panel.add(loading);<br />
 
 We set the loading percentage depending on your background processing, with:<br />
 loading.setPosition(n) //n have to be an integer between 0 and 100<br />
-
